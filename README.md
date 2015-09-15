@@ -1,2 +1,2 @@
 # Programing_challenges
-Challeges
+Challenges
