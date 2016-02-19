@@ -1,0 +1,41 @@
+#include <stdlib.h>
+
+/*
+  Write a function for printing 5 closest numbers
+*/
+void printclosest(int arr[], int num, int n){
+  int temp;
+  int min;
+  int j;
+  for (j = 0; j < sizeof(arr)+2; j++ ) {
+      printf("el %d", arr[j]);
+  }
+
+   int minarr[MAXSIZE] = {0};
+   int first = 0;
+   int last = n - 1;
+   int middle = (first+last)/2;
+ 
+    while (first <= last) {
+      
+     if (arr[middle] < num) {
+         temp = abs(arr[middle]-num);
+         minarr[middle] = temp;
+         first = middle + 1;
+         //printf("%d is num and minsub is %d at index %d",arr[middle],minarr[middle],middle);
+         
+     }
+      else if (arr[middle] == num) {
+         printf("%d found at location %d.\n", num, middle+1);
+         break;
+      }
+     else{
+         last = middle - 1;
+     }
+      middle = (first + last)/2;
+   }
+  if (first > last){
+      printf("Not found! %d is not present in the list.\n", num);
+  }
+   
+}
