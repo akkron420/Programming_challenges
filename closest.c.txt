@@ -15,27 +15,41 @@ void printclosest(int arr[], int num, int n){
    int first = 0;
    int last = n - 1;
    int middle = (first+last)/2;
- 
-    while (first <= last) {
-      
-     if (arr[middle] < num) {
+  
+     if (arr[middle] < num) { 
+       
+       for (middle;middle <n ;middle++){
          temp = abs(arr[middle]-num);
          minarr[middle] = temp;
-         first = middle + 1;
+         printf("   ---- %d ------ diff of %d and %d",temp,arr[middle],num);
          //printf("%d is num and minsub is %d at index %d",arr[middle],minarr[middle],middle);
-         
-     }
-      else if (arr[middle] == num) {
-         printf("%d found at location %d.\n", num, middle+1);
-         break;
-      }
+       }
+     }  
      else{
-         last = middle - 1;
+       for (first;first<middle;first++){
+         temp = abs(arr[first]-num);
+         minarr[first] = temp;
+         printf("   ---- %d ------ diff of %d and %d",temp,arr[first],num);
+         
+       }
      }
-      middle = (first + last)/2;
+    
+    int l;
+    for (l=0;l < 20;l++) {
+    printf("%d\n",minarr[l]);
    }
-  if (first > last){
-      printf("Not found! %d is not present in the list.\n", num);
-  }
+    int  k = 0;
+    int m;
+    min = minarr[k];
+
+    for (m = 0; m < n; ++m)
+    {
+        if (minarr[m] < min)
+        {
+            min = (int)minarr[m];
+            k = m;
+        }
+    }
+    printf("min index at %d",k);
    
 }
