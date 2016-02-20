@@ -4,52 +4,66 @@
   Write a function for printing 5 closest numbers
 */
 void printclosest(int arr[], int num, int n){
-  int temp;
-  int min;
-  int j;
-  for (j = 0; j < sizeof(arr)+2; j++ ) {
-      printf("el %d", arr[j]);
-  }
+  printKclosest(arr, num, 5, n);
+}
 
-   int minarr[MAXSIZE] = {0};
-   int first = 0;
-   int last = n - 1;
-   int middle = (first+last)/2;
-  
-     if (arr[middle] < num) { 
-       
-       for (middle;middle <n ;middle++){
-         temp = abs(arr[middle]-num);
-         minarr[middle] = temp;
-         printf("   ---- %d ------ diff of %d and %d",temp,arr[middle],num);
-         //printf("%d is num and minsub is %d at index %d",arr[middle],minarr[middle],middle);
-       }
-     }  
-     else{
-       for (first;first<middle;first++){
-         temp = abs(arr[first]-num);
-         minarr[first] = temp;
-         printf("   ---- %d ------ diff of %d and %d",temp,arr[first],num);
-         
-       }
-     }
-    
-    int l;
-    for (l=0;l < 20;l++) {
-    printf("%d\n",minarr[l]);
-   }
-    int  k = 0;
-    int m;
-    min = minarr[k];
+/* Function to find the cross over point (the point before
+   which elements are smaller than or equal to x and after
+   which greater than x)*/
+int findCrossOver(int arr[], int low, int high, int x)
+{
+  // Base cases
+  if (arr[high] <= x) // x is greater than all
+    return high;
+  if (arr[low] > x)  // x is smaller than all
+    return low;
 
-    for (m = 0; m < n; ++m)
+  // Find the middle point
+  int mid = (low + high)/2;  /* low + (high - low)/2 */
+
+  /* If x is same as middle element, then return mid */
+  if (arr[mid] <= x && arr[mid+1] > x)
+    return mid;
+
+  /* If x is greater than arr[mid], then either arr[mid + 1]
+    is ceiling of x or ceiling lies in arr[mid+1...high] */
+  if(arr[mid] < x)
+      return findCrossOver(arr, mid+1, high, x);
+
+  return findCrossOver(arr, low, mid - 1, x);
+}
+
+// This function prints k closest elements to x in arr[].
+// n is the number of elements in arr[]
+void printKclosest(int arr[], int x, int k, int n)
+{
+    // Find the crossover point
+    int l = findCrossOver(arr, 0, n-1, x); // le
+    int r = l+1;   // Right index to search
+    int count = 0; // To keep track of count of elements already printed
+
+    // If x is present in arr[], then reduce left index
+    // Assumption: all elements in arr[] are distinct
+    if (arr[l] == x) l--;
+
+    // Compare elements on left and right of crossover
+    // point to find the k closest elements
+    while (l >= 0 && r < n && count < k)
     {
-        if (minarr[m] < min)
-        {
-            min = (int)minarr[m];
-            k = m;
-        }
+        if (x - arr[l] < arr[r] - x)
+            printf("%d ", arr[l--]);
+        else
+            printf("%d ", arr[r++]);
+        count++;
     }
-    printf("min index at %d",k);
-   
+
+    // If there are no more elements on right side, then
+    // print left elements
+    while (count < k && l >= 0)
+        printf("%d ", arr[l--]), count++;
+
+    // If there are no more elements on left side, then
+    // print right elements
+    while (count < k && r < n)
+        printf("%d ", arr[r++]), count++;
 }
